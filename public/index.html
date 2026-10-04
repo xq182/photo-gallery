@@ -4,60 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f7f7f2">
-  <meta name="description" content="一份持续生长的私人影像集。按编号浏览照片，收藏喜欢的瞬间。">
+  <meta name="description" content="照片与编号。">
   <meta name="robots" content="noindex, nofollow">
-  <title>日常切片 · 照片档案</title>
-  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./styles.css">
-  <script src="./app.js" defer></script>
+  <title>照片</title>
+  <link rel="stylesheet" href="./styles.css?v=2">
+  <script src="./app.js?v=2" defer></script>
 </head>
 <body>
-  <a class="skip-link" href="#archive">跳转到全部照片</a>
-  <header class="site-header shell">
-    <a class="wordmark" href="./" aria-label="日常切片 首页"><span class="brand-mark" aria-hidden="true">切</span><span>日常切片<span class="wordmark-en">THE EVERYDAY ARCHIVE</span></span></a>
-    <nav aria-label="主导航"><a class="nav-link" href="#archive">浏览照片 <span aria-hidden="true">↗</span></a><a class="github-link" href="https://github.com/xq182/photo-gallery" target="_blank" rel="noopener noreferrer" aria-label="在 GitHub 管理相册">GitHub <span aria-hidden="true">↗</span></a></nav>
-  </header>
-
-  <main>
-    <section class="hero shell" aria-labelledby="hero-title">
-      <div class="hero-copy">
-        <p class="eyebrow"><span class="status-dot"></span> A PERSONAL PHOTO COLLECTION</p>
-        <h1 id="hero-title">生活的<span class="title-second">切片<span class="title-dot">。</span></span></h1>
-        <p class="hero-description">把走过的地方，和当时的自己，<br>收进一个随时可以翻看的相册。</p>
-        <a class="hero-cta" href="#archive">翻开相册 <span aria-hidden="true">↓</span></a>
-        <div class="hero-note"><span class="mono"><span id="first-id">001</span> — <span id="last-id">037</span></span><span>每张照片，都有自己的编号</span></div>
-      </div>
-      <div class="hero-art" aria-label="相册封面">
-        <div class="cover-label"><span class="mono">SELECTED MOMENTS</span><span class="mono">VOL. 01</span></div>
-        <button class="cover-main" data-photo="003" aria-label="查看照片 003"><img src="./photos/003.webp" alt="相册照片 003" fetchpriority="high"><span class="cover-number mono">NO. 003 <span>↗</span></span></button>
-        <button class="cover-small" data-photo="010" aria-label="查看照片 010"><img src="./photos/010-thumb.webp" alt="相册照片 010"><span class="mono">NO. 010</span></button>
-        <div class="cover-stamp" aria-hidden="true"><span class="stamp-number" data-total>037</span><span>FRAMES<br>OF LIFE</span></div>
-        <p class="cover-footnote mono">ORDINARY DAYS. EXTRAORDINARY MEMORIES.</p>
-      </div>
-    </section>
-
-    <section id="archive" class="archive shell" aria-labelledby="archive-title">
-      <div class="section-heading"><div><p class="eyebrow">THE COLLECTION</p><h2 id="archive-title">全部照片 <span class="count" id="total-count">37</span></h2></div><p class="section-hint">点击照片，走近一点 <span aria-hidden="true">↗</span></p></div>
-      <div class="toolbar">
-        <div class="filter-group" role="group" aria-label="照片筛选"><button class="filter active" id="filter-all" aria-pressed="true">全部</button><button class="filter" id="filter-favorites" aria-pressed="false">已收藏 <span id="favorite-count">0</span></button></div>
-        <div class="toolbar-right"><label class="search-box"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><span class="sr-only">搜索照片编号</span><input id="search" type="search" placeholder="搜索编号，如 008" autocomplete="off" spellcheck="false"><kbd>/</kbd></label><label class="sort-box"><span class="sr-only">照片排序</span><select id="sort"><option value="asc">编号正序</option><option value="desc">编号倒序</option></select></label></div>
-      </div>
-      <div class="results-line"><span id="results-count" role="status" aria-live="polite">正在打开相册…</span><span class="mono">A LITTLE OF EVERYTHING</span></div>
-      <div id="photo-grid" class="photo-grid" aria-busy="true"></div>
-      <div id="empty-state" class="empty-state" hidden><span class="empty-icon" aria-hidden="true">＋</span><h3 id="empty-title">没有找到这张照片</h3><p id="empty-description">试试其他编号，或查看全部照片。</p><button id="reset-filters" class="text-button">查看全部照片 ↗</button></div>
-      <div id="error-state" class="empty-state" hidden><h3>相册暂时没有打开</h3><p>请检查网络后重新试一次。</p><button id="retry" class="text-button">重新加载 ↻</button></div>
-      <noscript><p>请开启 JavaScript 以浏览照片编号和大图。</p></noscript>
-      <div class="collection-end"><span class="end-line"></span><span>每个平凡的日子，都值得被记住。</span><span class="end-line"></span></div>
-    </section>
+  <main id="archive" aria-label="照片">
+    <div id="photo-grid" class="photo-grid" aria-busy="true"></div>
+    <p id="error-state" role="alert" hidden>照片加载失败，请刷新重试。</p>
+    <noscript>请开启 JavaScript 以查看照片。</noscript>
   </main>
-
-  <footer class="site-footer shell"><div><strong>日常切片</strong><span>生活继续，相册也继续。</span></div><a href="#" class="back-top">回到顶部 ↑</a><span class="mono">MADE OF MOMENTS · <span data-total>037</span> PHOTOS</span></footer>
-
-  <dialog id="lightbox" aria-labelledby="lightbox-title">
-    <div class="lightbox-header"><h2 id="lightbox-title">照片 <span id="lightbox-id" class="mono"></span></h2><span id="lightbox-position" class="mono"></span><button id="close-lightbox" class="icon-button" aria-label="关闭大图"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
-    <div class="lightbox-stage"><button id="prev-photo" class="icon-button arrow-button" aria-label="上一张照片">←</button><div class="lightbox-image-wrap"><img id="lightbox-image" alt=""><p id="image-error" hidden>图片加载失败，请稍后重试。</p></div><button id="next-photo" class="icon-button arrow-button" aria-label="下一张照片">→</button></div>
-    <div class="lightbox-footer"><span class="lightbox-tip">← → 切换照片 <span>·</span> ESC 关闭</span><div class="lightbox-actions"><button id="favorite-photo" class="lightbox-button" aria-pressed="false">♡ 收藏</button><button id="copy-link" class="lightbox-button">复制链接 ↗</button><a id="download-photo" class="lightbox-button" download>下载照片 ↓</a></div></div>
+  <dialog id="lightbox" aria-labelledby="lightbox-id">
+    <button id="close-lightbox" aria-label="关闭大图">
+      <img id="lightbox-image" alt="">
+      <span id="lightbox-id"></span>
+    </button>
   </dialog>
-  <div id="toast" role="status" class="toast" hidden></div>
 </body>
 </html>
