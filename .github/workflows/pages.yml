@@ -1,0 +1,76 @@
+name: 发布照片网站
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# 编号写回与部署串行完成；新提交等上一轮完成后再处理。
+concurrency:
+  group: photo-gallery-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: 读取最新主分支
+        uses: actions/checkout@v6
+        with:
+          ref: main
+
+      - name: 配置 Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: 安装照片处理依赖
+        run: python -m pip install -r requirements.txt
+
+      - name: 为新增照片编号并生成网页图片
+        run: python scripts/prepare_photos.py --source source
+
+      - name: 保存编号与网页图片
+        shell: bash
+        run: |
+          # 只提交管线产物，不改动原图或其他网站源文件。
+          git add -- photo-manifest.json public/photos.json public/photos
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'chore: preserve photo numbers and web assets'
+          if ! git push origin HEAD:main; then
+            echo '::error::无法保存照片编号。若 main 在构建期间更新，请重跑最新一次任务；否则检查 Actions 写权限或分支保护。此次不发布，以免编号丢失。'
+            exit 1
+          fi
+
+      - name: 上传网站产物
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: 配置 GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: 发布网站
+        id: deployment
+        uses: actions/deploy-pages@v4
